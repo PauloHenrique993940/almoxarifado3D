@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Almoxarifado 3D</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <aside id="left">
+    <h1>📦 Almoxarifado 3D</h1>
+    <div class="group">
+      <h3>Adicionar ao ambiente</h3>
+      <div id="catalog"></div>
+    </div>
+    <div class="group">
+      <h3>Buscar produto</h3>
+      <input id="search" placeholder="Nome do produto...">
+      <div id="searchResults"></div>
+    </div>
+    <div class="group">
+      <h3>Ambiente</h3>
+      <div class="row">
+        <label>Largura (m) <input id="rW" type="number" min="4" max="40" step="1"></label>
+        <label>Profund. (m) <input id="rD" type="number" min="4" max="40" step="1"></label>
+      </div>
+      <div class="row">
+        <label>Piso <input id="rFloor" type="color"></label>
+        <label>Parede <input id="rWall" type="color"></label>
+        <button id="rApply">Aplicar</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="showGrid" checked> Mostrar grade</label>
+      <div class="row">
+        <button id="vTop">Vista topo</button>
+        <button id="vIso">Vista geral</button>
+      </div>
+    </div>
+    <div class="group">
+      <h3>Opções</h3>
+      <label class="chk"><input type="checkbox" id="lockMove"> Bloquear arrastar</label>
+      <label class="chk"><input type="checkbox" id="snap" checked> Alinhar à grade</label>
+      <div class="row">
+        <button id="btnExport">Exportar</button>
+        <button id="btnImport">Importar</button>
+        <button id="btnReset" class="danger">Resetar</button>
+      </div>
+      <input type="file" id="fileIn" accept=".json" hidden>
+    </div>
+    <p class="help">
+      <b>Clique</b> num objeto para selecionar • <b>Arraste</b> para mover • <b>R</b> gira • <b>Del</b> remove<br>
+      Botão direito/arrastar fundo: orbitar • Roda: zoom
+    </p>
+  </aside>
+
+  <main id="view"><div id="toast"></div></main>
+
+  <aside id="right">
+    <div id="empty">Selecione uma prateleira, geladeira ou móvel no ambiente 3D.</div>
+    <div id="detail" hidden>
+      <h2 id="uName"></h2>
+      <div class="row">
+        <button id="bRotL">⟲ Girar</button>
+        <button id="bRotR">⟳ Girar</button>
+        <button id="bDup">Duplicar</button>
+        <button id="bDel" class="danger">Excluir</button>
+      </div>
+      <div class="row">
+        <label>Modelo:
+          <select id="uVariant"></select>
+        </label>
+        <button id="bFocus">🔍 Ver de perto</button>
+      </div>
+      <div class="row">
+        <label>Cor do móvel
+          <input id="uColor" type="color" value="#888888">
+        </label>
+        <button id="bColorReset">Cor padrão</button>
+      </div>
+      <div id="storage">
+        <h3>Conteúdo <span id="cap"></span></h3>
+        <p class="hint">Clique numa célula vazia para escolher onde colocar; clique numa caixa para selecioná-la.</p>
+        <div id="grid"></div>
+
+        <div class="box-form">
+          <h3 id="formTitle">Adicionar caixa</h3>
+          <input id="pName" placeholder="Nome do produto" list="prodList">
+          <datalist id="prodList"></datalist>
+          <div class="row">
+            <label>Qtd <input id="pQty" type="number" min="1" value="10"></label>
+            <label>Cor <input id="pColor" type="color" value="#c8924a"></label>
+          </div>
+          <div class="row">
+            <label>Nível <select id="pLevel"></select></label>
+            <label>Posição <select id="pSlot"></select></label>
+          </div>
+          <div class="row">
+            <button id="bAdd" class="primary">+ Colocar na prateleira</button>
+          </div>
+        </div>
+
+        <div id="boxActions" hidden>
+          <h3>Caixa selecionada</h3>
+          <div id="boxInfo"></div>
+          <div class="row">
+            <button id="bQtyM">− Retirar</button>
+            <input id="qtyDelta" type="number" min="1" value="1">
+            <button id="bQtyP">+ Repor</button>
+          </div>
+          <div class="row">
+            <button id="bSave">Salvar nome/qtd/cor do formulário</button>
+          </div>
+          <div class="row">
+            <button id="bMoveBox">Mover p/ célula escolhida</button>
+            <button id="bRemoveBox" class="danger">Remover caixa</button>
+          </div>
+        </div>
+      </div>
+      <div id="noStorage" hidden>Este móvel não guarda caixas.</div>
+    </div>
+  </aside>
+</div>
+<script src="lib/three.min.js"></script>
+<script src="lib/OrbitControls.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
