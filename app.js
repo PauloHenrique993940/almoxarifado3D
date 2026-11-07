@@ -30,7 +30,7 @@ const DEFS = {
   door_roll: { cat: 'Portas', label: 'Portao de enrolar', kind: 'door', w: 3.0, d: 0.2, h: 2.6, color: 0x9aa3af, roll: true }
 };
 const ROOM = { w: 14, d: 22, wallH: 3, floor: '#dfe5eb', wall: '#d8dde4' };
-const KEY = 'almox3d_v4';
+const KEY = 'almox3d_v5';
 const PALETTE = ['#c8924a', '#d8a35c', '#7aa6d6', '#8ec07c', '#e0807a', '#b79ae0', '#e5cf6a', '#6fc3c3'];
 const $ = id => document.getElementById(id);
 
@@ -147,7 +147,7 @@ function load() {
   try {
     const current = JSON.parse(localStorage.getItem(KEY));
     if (current) return current;
-    for (const oldKey of ['almox3d_v3', 'almox3d_v2', 'almox3d_v1']) {
+    for (const oldKey of ['almox3d_v4', 'almox3d_v3', 'almox3d_v2', 'almox3d_v1']) {
       const old = JSON.parse(localStorage.getItem(oldKey));
       if (old && Array.isArray(old.units)) {
         const migrated = migrateState(old);
