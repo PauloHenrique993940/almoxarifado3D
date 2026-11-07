@@ -9,119 +9,64 @@
 <body>
 <div id="app">
   <aside id="left">
-    <h1>📦 Almoxarifado 3D</h1>
-    <div class="group">
-      <h3>Adicionar ao ambiente</h3>
-      <div id="catalog"></div>
-    </div>
-    <div class="group">
-      <h3>Buscar produto</h3>
-      <input id="search" placeholder="Nome do produto...">
-      <div id="searchResults"></div>
-    </div>
+    <h1>Almoxarifado 3D</h1>
+    <h3>Resumo do estoque</h3>
+    <div id="inventorySummary" class="summary"></div>
+    <div class="group"><h3>Adicionar ao ambiente</h3><div id="catalog"></div></div>
+    <div class="group"><h3>Buscar material</h3><input id="search" placeholder="Nome, c&oacute;digo, categoria ou endere&ccedil;o"><div id="searchResults"></div></div>
     <div class="group">
       <h3>Ambiente</h3>
-      <div class="row">
-        <label>Largura (m) <input id="rW" type="number" min="4" max="40" step="1"></label>
-        <label>Profund. (m) <input id="rD" type="number" min="4" max="40" step="1"></label>
-      </div>
-      <div class="row">
-        <label>Piso <input id="rFloor" type="color"></label>
-        <label>Parede <input id="rWall" type="color"></label>
-        <button id="rApply">Aplicar</button>
-      </div>
+      <div class="row"><label>Largura (m)<input id="rW" type="number" min="4" max="40" step="1"></label><label>Profundidade (m)<input id="rD" type="number" min="4" max="40" step="1"></label></div>
+      <div class="row"><label>Piso<input id="rFloor" type="color"></label><label>Parede<input id="rWall" type="color"></label><button id="rApply">Aplicar</button></div>
       <label class="chk"><input type="checkbox" id="showGrid" checked> Mostrar grade</label>
-      <div class="row">
-        <button id="vTop">Vista topo</button>
-        <button id="vIso">Vista geral</button>
-      </div>
+      <div class="row"><button id="vTop">Vista topo</button><button id="vIso">Vista geral</button></div>
     </div>
     <div class="group">
-      <h3>Opções</h3>
+      <h3>Op&ccedil;&otilde;es</h3>
       <label class="chk"><input type="checkbox" id="lockMove"> Bloquear arrastar</label>
-      <label class="chk"><input type="checkbox" id="snap" checked> Alinhar à grade</label>
-      <div class="row">
-        <button id="btnExport">Exportar</button>
-        <button id="btnImport">Importar</button>
-        <button id="btnReset" class="danger">Resetar</button>
-      </div>
+      <label class="chk"><input type="checkbox" id="snap" checked> Alinhar &agrave; grade</label>
+      <div class="row"><button id="btnExport">Exportar</button><button id="btnImport">Importar</button><button id="btnReset" class="danger">Resetar</button></div>
       <input type="file" id="fileIn" accept=".json" hidden>
     </div>
-    <p class="help">
-      <b>Clique</b> num objeto para selecionar • <b>Arraste</b> para mover • <b>R</b> gira • <b>Del</b> remove<br>
-      Botão direito/arrastar fundo: orbitar • Roda: zoom
-    </p>
+    <p class="help"><b>Clique</b> para selecionar; <b>arraste</b> para mover; <b>R</b> gira; <b>Del</b> remove.<br>Bot&atilde;o direito orbita; roda do mouse aproxima.</p>
   </aside>
-
-  <main id="view"><div id="toast"></div></main>
-
+  <main id="view">
+    <div id="sceneLegend"><b>Setores</b><span>Ferragens</span><span>Escrit&oacute;rio</span><span>El&eacute;trica e TI</span><span>EPI e ferramentas</span><small>Corredores sinalizados em amarelo</small></div>
+    <div id="toast"></div>
+  </main>
   <aside id="right">
-    <div id="empty">Selecione uma prateleira, geladeira ou móvel no ambiente 3D.</div>
+    <div id="empty">Selecione uma estante ou arm&aacute;rio no ambiente 3D.</div>
     <div id="detail" hidden>
       <h2 id="uName"></h2>
-      <div class="row">
-        <button id="bRotL">⟲ Girar</button>
-        <button id="bRotR">⟳ Girar</button>
-        <button id="bDup">Duplicar</button>
-        <button id="bDel" class="danger">Excluir</button>
-      </div>
-      <div class="row">
-        <label>Modelo:
-          <select id="uVariant"></select>
-        </label>
-        <button id="bFocus">🔍 Ver de perto</button>
-      </div>
-      <div class="row">
-        <label>Cor do móvel
-          <input id="uColor" type="color" value="#888888">
-        </label>
-        <button id="bColorReset">Cor padrão</button>
-      </div>
+      <div class="row"><button id="bRotL">Girar</button><button id="bRotR">Girar</button><button id="bDup">Duplicar</button><button id="bDel" class="danger">Excluir</button></div>
+      <div class="row"><label>Modelo<select id="uVariant"></select></label><button id="bFocus">Ver de perto</button></div>
+      <div class="row"><label>Cor do m&oacute;vel<input id="uColor" type="color" value="#888888"></label><button id="bColorReset">Cor padr&atilde;o</button></div>
       <div id="storage">
-        <h3>Conteúdo <span id="cap"></span></h3>
-        <p class="hint">Clique numa célula vazia para escolher onde colocar; clique numa caixa para selecioná-la.</p>
+        <h3>Conte&uacute;do <span id="cap"></span></h3>
+        <p class="hint">Endere&ccedil;o da c&eacute;lula: P = n&iacute;vel da prateleira; C = compartimento. Selecione uma c&eacute;lula para adicionar ou mover material.</p>
         <div id="grid"></div>
-
         <div class="box-form">
-          <h3 id="formTitle">Adicionar caixa</h3>
-          <input id="pName" placeholder="Nome do produto" list="prodList">
-          <datalist id="prodList"></datalist>
-          <div class="row">
-            <label>Qtd <input id="pQty" type="number" min="1" value="10"></label>
-            <label>Cor <input id="pColor" type="color" value="#c8924a"></label>
-          </div>
-          <div class="row">
-            <label>Nível <select id="pLevel"></select></label>
-            <label>Posição <select id="pSlot"></select></label>
-          </div>
-          <div class="row">
-            <button id="bAdd" class="primary">+ Colocar na prateleira</button>
-          </div>
+          <h3 id="formTitle">Adicionar material</h3>
+          <input id="pName" placeholder="Nome do produto" list="prodList"><datalist id="prodList"></datalist>
+          <textarea id="pDescription" placeholder="Descri&ccedil;&atilde;o do material"></textarea>
+          <div class="row"><label>C&oacute;digo<input id="pCode" placeholder="MAT-001"></label><label>Categoria<input id="pCategory" placeholder="Ferragens"></label></div>
+          <label>Situa&ccedil;&atilde;o do estoque<select id="pStatus"><option>Ativo</option><option>Excedente</option><option>Obsoleto</option><option>Sem utiliza&ccedil;&atilde;o</option></select></label>
+          <div class="row"><label>Quantidade<input id="pQty" type="number" min="1" value="10"></label><label>Estoque m&iacute;nimo<input id="pMinQty" type="number" min="0" value="5"></label></div>
+          <div class="row"><label>Peso por caixa (kg)<input id="pWeight" type="number" min="0" step="0.1" value="1"></label><label>Cor da caixa<input id="pColor" type="color" value="#c8924a"></label></div>
+          <div class="row"><label>N&iacute;vel P<select id="pLevel"></select></label><label>Compartimento C<select id="pSlot"></select></label></div>
+          <div class="row"><button id="bAdd" class="primary">+ Guardar neste endere&ccedil;o</button></div>
         </div>
-
         <div id="boxActions" hidden>
-          <h3>Caixa selecionada</h3>
-          <div id="boxInfo"></div>
-          <div class="row">
-            <button id="bQtyM">− Retirar</button>
-            <input id="qtyDelta" type="number" min="1" value="1">
-            <button id="bQtyP">+ Repor</button>
-          </div>
-          <div class="row">
-            <button id="bSave">Salvar nome/qtd/cor do formulário</button>
-          </div>
-          <div class="row">
-            <button id="bMoveBox">Mover p/ célula escolhida</button>
-            <button id="bRemoveBox" class="danger">Remover caixa</button>
-          </div>
+          <h3>Material selecionado</h3><div id="boxInfo"></div>
+          <div class="row"><button id="bQtyM">- Retirar</button><input id="qtyDelta" type="number" min="1" value="1"><button id="bQtyP">+ Repor</button></div>
+          <div class="row"><button id="bSave">Salvar dados do material</button></div>
+          <div class="row"><button id="bMoveBox">Mover para c&eacute;lula</button><button id="bRemoveBox" class="danger">Remover</button></div>
         </div>
       </div>
-      <div id="noStorage" hidden>Este móvel não guarda caixas.</div>
+      <div id="noStorage" hidden>Este m&oacute;vel n&atilde;o guarda caixas.</div>
     </div>
   </aside>
 </div>
-<script src="lib/three.min.js"></script>
-<script src="lib/OrbitControls.js"></script>
-<script src="app.js"></script>
+<script src="lib/three.min.js"></script><script src="lib/OrbitControls.js"></script><script src="app.js"></script>
 </body>
 </html>

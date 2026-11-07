@@ -1,10 +1,10 @@
 (function () {
 'use strict';
 
-/* ---------- Definições dos modelos ---------- */
+/* ---------- Defini��es dos modelos ---------- */
 const DEFS = {
   shelf_p: { cat: 'Prateleiras', label: 'Prateleira pequena', kind: 'shelf', w: 1.0, d: 0.45, levels: 4, slots: 2, lh: 0.45, color: 0x3b6fb6 },
-  shelf_m: { cat: 'Prateleiras', label: 'Prateleira média', kind: 'shelf', w: 1.8, d: 0.5, levels: 4, slots: 4, lh: 0.5, color: 0x3b6fb6 },
+  shelf_m: { cat: 'Prateleiras', label: 'Prateleira media', kind: 'shelf', w: 1.8, d: 0.5, levels: 4, slots: 4, lh: 0.5, color: 0x3b6fb6 },
   shelf_g: { cat: 'Prateleiras', label: 'Prateleira grande', kind: 'shelf', w: 2.6, d: 0.6, levels: 5, slots: 6, lh: 0.45, color: 0x3b6fb6 },
   shelf_c: { cat: 'Prateleiras', label: 'Prateleira compacta', kind: 'shelf', w: 1.4, d: 0.4, levels: 3, slots: 3, lh: 0.5, color: 0x3b6fb6 },
   shelf_t: { cat: 'Prateleiras', label: 'Estante alta', kind: 'shelf', w: 1.2, d: 0.4, levels: 6, slots: 2, lh: 0.38, color: 0x6a7f3a },
@@ -13,24 +13,24 @@ const DEFS = {
   fridge_2:{ cat: 'Geladeiras', label: 'Geladeira industrial', kind: 'closed', w: 1.4, d: 0.85, levels: 4, slots: 4, lh: 0.48, color: 0xcfd6de, doors: 2, handle: true },
   fridge_3:{ cat: 'Geladeiras', label: 'Frigobar', kind: 'closed', w: 0.55, d: 0.55, levels: 2, slots: 1, lh: 0.3, color: 0x2f343d, doors: 1, handle: true },
   fridge_4:{ cat: 'Geladeiras', label: 'Freezer vertical', kind: 'closed', w: 0.7, d: 0.7, levels: 5, slots: 2, lh: 0.36, color: 0xf2f4f7, doors: 1, handle: true },
-  cab_3:   { cat: 'Armários', label: 'Armário de aço', kind: 'closed', w: 1.2, d: 0.5, levels: 4, slots: 3, lh: 0.45, color: 0x7d8794, doors: 2 },
-  cab_1:   { cat: 'Armários', label: 'Armário baixo', kind: 'closed', w: 1.0, d: 0.5, levels: 2, slots: 2, lh: 0.45, color: 0x8a5a33, doors: 2 },
-  cab_2:   { cat: 'Armários', label: 'Armário alto', kind: 'closed', w: 0.9, d: 0.5, levels: 5, slots: 2, lh: 0.4, color: 0x8a5a33, doors: 1 },
-  desk:    { cat: 'Móveis', label: 'Escrivaninha', kind: 'desk', w: 1.4, d: 0.7, h: 0.75, color: 0xb98a55 },
-  table:   { cat: 'Móveis', label: 'Mesa', kind: 'desk', w: 1.8, d: 0.9, h: 0.76, color: 0xd9d2c3 },
-  bench:   { cat: 'Móveis', label: 'Bancada', kind: 'bench', w: 2.0, d: 0.7, h: 0.92, color: 0x7d8794 },
-  chair:   { cat: 'Móveis', label: 'Cadeira', kind: 'chair', w: 0.5, d: 0.5, color: 0x333a47 },
-  pallet:  { cat: 'Móveis', label: 'Pallet', kind: 'pallet', w: 1.2, d: 0.8, color: 0xc9a46a },
-  cart:    { cat: 'Móveis', label: 'Carrinho de carga', kind: 'cart', w: 1.0, d: 0.6, h: 1.0, color: 0x3b6fb6 },
-  ext:     { cat: 'Móveis', label: 'Extintor', kind: 'ext', w: 0.3, d: 0.3, h: 0.6, color: 0xc62828 },
-  plant:   { cat: 'Móveis', label: 'Planta', kind: 'plant', w: 0.5, d: 0.5, h: 1.0, color: 0x3f8f4a },
+  cab_3: { cat: 'Armarios', label: 'Armario de aco', kind: 'closed', w: 1.2, d: 0.5, levels: 4, slots: 3, lh: 0.45, color: 0x7d8794, doors: 2 },
+  cab_1: { cat: 'Armarios', label: 'Armario baixo', kind: 'closed', w: 1.0, d: 0.5, levels: 2, slots: 2, lh: 0.45, color: 0x8a5a33, doors: 2 },
+  cab_2: { cat: 'Armarios', label: 'Armario alto', kind: 'closed', w: 0.9, d: 0.5, levels: 5, slots: 2, lh: 0.4, color: 0x8a5a33, doors: 1 },
+  desk: { cat: 'Moveis', label: 'Escrivaninha', kind: 'desk', w: 1.4, d: 0.7, h: 0.75, color: 0xb98a55 },
+  table: { cat: 'Moveis', label: 'Mesa', kind: 'desk', w: 1.8, d: 0.9, h: 0.76, color: 0xd9d2c3 },
+  bench: { cat: 'Moveis', label: 'Bancada', kind: 'bench', w: 2.0, d: 0.7, h: 0.92, color: 0x7d8794 },
+  chair: { cat: 'Moveis', label: 'Cadeira', kind: 'chair', w: 0.5, d: 0.5, color: 0x333a47 },
+  pallet: { cat: 'Moveis', label: 'Pallet', kind: 'pallet', w: 1.2, d: 0.8, color: 0xc9a46a },
+  cart: { cat: 'Moveis', label: 'Carrinho de carga', kind: 'cart', w: 1.0, d: 0.6, h: 1.0, color: 0x3b6fb6 },
+  ext:     { cat: 'M�veis', label: 'Extintor', kind: 'ext', w: 0.3, d: 0.3, h: 0.6, color: 0xc62828 },
+  plant: { cat: 'Moveis', label: 'Planta', kind: 'plant', w: 0.5, d: 0.5, h: 1.0, color: 0x3f8f4a },
   window:  { cat: 'Portas', label: 'Janela', kind: 'window', w: 1.4, d: 0.16, h: 2.1, color: 0x9ed0f0 },
   door_1:  { cat: 'Portas', label: 'Porta simples', kind: 'door', w: 1.0, d: 0.16, h: 2.1, color: 0x8a5a33 },
   door_2:  { cat: 'Portas', label: 'Porta dupla', kind: 'door', w: 1.8, d: 0.16, h: 2.1, color: 0x6e7a88, double: true },
-  door_roll:{ cat: 'Portas', label: 'Portão de enrolar', kind: 'door', w: 3.0, d: 0.2, h: 2.6, color: 0x9aa3af, roll: true }
+  door_roll: { cat: 'Portas', label: 'Portao de enrolar', kind: 'door', w: 3.0, d: 0.2, h: 2.6, color: 0x9aa3af, roll: true }
 };
-const ROOM = { w: 14, d: 10, wallH: 3, floor: '#aab1ba', wall: '#d8dde4' };
-const KEY = 'almox3d_v1';
+const ROOM = { w: 14, d: 22, wallH: 3, floor: '#dfe5eb', wall: '#d8dde4' };
+const KEY = 'almox3d_v4';
 const PALETTE = ['#c8924a', '#d8a35c', '#7aa6d6', '#8ec07c', '#e0807a', '#b79ae0', '#e5cf6a', '#6fc3c3'];
 const $ = id => document.getElementById(id);
 
@@ -45,31 +45,141 @@ const groups = new Map();
 function defaultState() {
   const s = { nextId: 1, units: [] };
   const add = (type, x, z, r) => { const u = { id: s.nextId++, type, x, z, r, boxes: [] }; s.units.push(u); return u; };
-  const put = (u, list) => list.forEach(([n, q, c, l, sl]) => u.boxes.push({ id: 'b' + Math.random().toString(36).slice(2, 9), name: n, qty: q, color: c, level: l, slot: sl }));
-  const a = add('shelf_m', -4, -4.4, 0);
-  put(a, [['Parafusos M6', 500, PALETTE[0], 0, 0], ['Porcas M6', 800, PALETTE[1], 0, 1], ['Arruelas', 1200, PALETTE[2], 1, 0], ['Luvas P', 40, PALETTE[3], 2, 2], ['Fita isolante', 60, PALETTE[4], 3, 1]]);
-  const b = add('shelf_m', -1.5, -4.4, 0);
-  put(b, [['Papel A4', 30, PALETTE[6], 0, 0], ['Canetas', 120, PALETTE[2], 1, 1], ['Toner HP', 6, PALETTE[5], 2, 3]]);
-  const c = add('shelf_g', 3, -4.3, 0);
-  put(c, [['Cabo de rede', 25, PALETTE[7], 0, 0], ['Conectores RJ45', 300, PALETTE[2], 1, 2], ['Lâmpadas LED', 48, PALETTE[6], 2, 4]]);
-  const f = add('fridge_1', 6.2, -4.2, 0);
-  put(f, [['Insulina', 20, '#9fd0ff', 1, 0], ['Vacinas', 15, '#ffd0a0', 1, 1], ['Reagentes', 12, '#d6b3ff', 2, 0]]);
-  add('door_2', 0.5, -ROOM.d / 2 + 0.08, 0);
-  add('window', -6.2, -ROOM.d / 2 + 0.08, 0);
-  add('rack', -5.5, 0.5, 1);
-  add('cab_2', 6.3, 0, 3);
-  add('desk', 3.5, 3, 2);
-  add('chair', 3.5, 2.1, 0);
-  add('pallet', -1, 2.5, 0);
+  let codeSeq = 1;
+  const put = (u, name, qty, category, level, weightKg, color) => u.boxes.push({ id: 'b' + Math.random().toString(36).slice(2, 9), name, description: name, code: 'MAT-' + String(codeSeq++).padStart(3, '0'), category, status: 'Ativo', minQty: 5, weightKg, qty, color, level, slot: 0 });
+  const lanes = [
+    { x: -5.1, category: 'Ferragens e fixadores', color: PALETTE[0], frameColor: '#3569a8', items: [['Parafusos M6', 500, 18], ['Porcas M6', 800, 14], ['Arruelas', 1200, 12], ['Buchas 8 mm', 200, 8], ['Pregos', 400, 10], ['Abracadeiras', 150, 2], ['Chapas metalicas', 25, 20], ['Pecas de reposicao', 18, 16]] },
+    { x: -1.7, category: 'Material de escritorio', color: PALETTE[6], frameColor: '#43845d', items: [['Papel A4', 30, 4], ['Canetas', 120, 2], ['Toner HP', 6, 2], ['Pastas suspensas', 40, 3], ['Clips', 500, 1], ['Grampos', 300, 1], ['Etiquetas', 100, 1], ['Envelopes', 80, 2]] },
+    { x: 1.7, category: 'Eletrica e informatica', color: PALETTE[7], frameColor: '#bd7c25', items: [['Cabo de rede', 25, 5], ['Conectores RJ45', 300, 2], ['Lampadas LED', 48, 2], ['Tomadas', 60, 3], ['Extensoes', 12, 4], ['Fusiveis', 80, 1], ['Mouse USB', 15, 1], ['Teclados USB', 10, 2]] },
+    { x: 5.1, category: 'EPI e ferramentas', color: PALETTE[3], frameColor: '#92515a', items: [['Luvas de protecao', 40, 3], ['Fita isolante', 60, 2], ['Chaves de fenda', 24, 3], ['Oculos de protecao', 20, 2], ['Mascaras PFF2', 100, 1], ['Alicates', 12, 4], ['Capacetes', 10, 3], ['Trenas', 8, 1]] }
+  ];
+  const zRows = [-5.5, -3.3, -1.1, 1.1, 3.3, 5.5];
+  const shelfPositions = lanes.flatMap(lane => zRows.map(z => ({ lane, z }))).slice(0, 22);
+  const defaultItems = lanes.flatMap(lane => lane.items.map(item => ({ lane, item })));
+  shelfPositions.forEach(({ lane, z }, index) => {
+    const shelf = add('shelf_m', lane.x, z, 1);
+    shelf.color = lane.frameColor;
+    const { item, lane: itemLane } = defaultItems[index];
+    put(shelf, item[0], item[1], itemLane.category, item[2] >= 15 ? 0 : 1, item[2], itemLane.color);
+  });
+  const cold = add('fridge_1', 6.2, -9.5, 0);
+  put(cold, 'Reagentes refrigerados', 12, 'Itens refrigerados', 1, 2, '#9fd0ff');
+  add('cab_3', -6.2, -9.5, 0);
+  add('door_2', -ROOM.w / 2 + 0.08, 0, 1);
+  add('window', 0, -ROOM.d / 2 + 0.08, 0);
+  add('ext', -6.65, -0.8, 0);
+  add('bench', 0, 9.8, 0);
   return s;
 }
-function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
+function migrateState(previous) {
+  const next = defaultState();
+  const shelves = next.units.filter(u => DEFS[u.type].kind === 'shelf');
+  const cold = next.units.find(u => u.type === 'fridge_1');
+  shelves.forEach(u => { u.boxes = []; });
+  if (cold) cold.boxes = [];
+  const groups = [[], [], [], []], refrigerated = [];
+  const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  (previous.units || []).forEach(u => (u.boxes || []).forEach(b => {
+    const category = normalize(b.category), name = normalize(b.name);
+    const item = { ...b, description: b.description || b.name, code: b.code || '', category: b.category || 'Materiais diversos', status: b.status || 'Ativo', minQty: b.minQty ?? 5, weightKg: Number(b.weightKg) || 0 };
+    if ((category + ' ' + name).includes('refriger') || (category + ' ' + name).includes('vacina')) refrigerated.push(item);
+    else if (category.includes('escrit') || category.includes('office') || name.includes('papel')) groups[1].push(item);
+    else if (category.includes('eletric') || category.includes('informat') || name.includes('cabo') || name.includes('conector')) groups[2].push(item);
+    else if (category.includes('epi') || category.includes('ferrament') || name.includes('luva') || name.includes('mascara')) groups[3].push(item);
+    else groups[0].push(item);
+  }));
+  const laneXs = [-5.1, -1.7, 1.7, 5.1], laneColors = ['#3569a8', '#43845d', '#bd7c25', '#92515a'];
+  let targetDepth = ROOM.d;
+  groups.forEach((items, lane) => {
+    const laneShelves = shelves.filter(u => Math.abs(u.x - laneXs[lane]) < 0.01).sort((a, b) => a.z - b.z);
+    const heavy = items.filter(b => b.weightKg > 15), light = items.filter(b => b.weightKg <= 15);
+    let shelfIndex = 0, heavyIndex = 0, lightIndex = 0;
+    while (heavyIndex < heavy.length || lightIndex < light.length) {
+      let shelf = laneShelves[shelfIndex];
+      if (!shelf) {
+        const z = 6.3 + 1.8 * (shelfIndex - 7);
+        shelf = { id: next.nextId++, type: 'shelf_m', x: laneXs[lane], z, r: 1, color: laneColors[lane], boxes: [] };
+        laneShelves.push(shelf); shelves.push(shelf); next.units.push(shelf);
+        targetDepth = Math.max(targetDepth, Math.ceil(2 * (Math.abs(z) + 1.4)));
+      }
+      const def = DEFS[shelf.type], bottom = heavy.slice(heavyIndex, heavyIndex + def.slots);
+      heavyIndex += bottom.length;
+      bottom.forEach((b, slot) => { b.level = 0; b.slot = slot; shelf.boxes.push(b); });
+      const remainingCapacity = def.levels * def.slots - bottom.length;
+      const lightCount = Math.min(remainingCapacity, light.length - lightIndex);
+      for (let i = 0; i < lightCount; i++) {
+        const b = light[lightIndex++];
+        let placed = false;
+        for (let level = 0; level < def.levels && !placed; level++) for (let slot = 0; slot < def.slots && !placed; slot++) {
+          if (!shelf.boxes.some(existing => existing.level === level && existing.slot === slot)) {
+            b.level = level; b.slot = slot; shelf.boxes.push(b); placed = true;
+          }
+        }
+      }
+      shelfIndex++;
+    }
+  });
+  const coldUnits = cold ? [cold] : [];
+  let coldIndex = 0;
+  while (coldIndex < refrigerated.length) {
+    let unit = coldUnits[coldUnits.length - 1];
+    if (!unit || unit.boxes.length >= DEFS[unit.type].levels * DEFS[unit.type].slots) {
+      const z = -9.5 - coldUnits.length * 0.95;
+      unit = { id: next.nextId++, type: 'fridge_1', x: 6.2, z, r: 0, boxes: [] };
+      coldUnits.push(unit); next.units.push(unit);
+      targetDepth = Math.max(targetDepth, Math.ceil(2 * (Math.abs(z) + 0.75)));
+    }
+    const def = DEFS[unit.type], index = unit.boxes.length, b = refrigerated[coldIndex++];
+    b.level = Math.floor(index / def.slots); b.slot = index % def.slots; unit.boxes.push(b);
+  }
+  const windowUnit = next.units.find(u => u.type === 'window');
+  if (windowUnit) windowUnit.z = -targetDepth / 2 + 0.08;
+  const migratedCodes = new Set(); let codeSeq = 1;
+  next.units.forEach(u => u.boxes.forEach(b => {
+    let code = String(b.code || '').trim().toUpperCase();
+    if (!code || migratedCodes.has(code)) { do { code = 'MAT-' + String(codeSeq++).padStart(3, '0'); } while (migratedCodes.has(code)); }
+    b.code = code; migratedCodes.add(code);
+  }));
+  next.room = { w: ROOM.w, d: targetDepth, floor: previous.room?.floor || ROOM.floor, wall: previous.room?.wall || ROOM.wall };
+  return next;
+}
+function load() {
+  try {
+    const current = JSON.parse(localStorage.getItem(KEY));
+    if (current) return current;
+    for (const oldKey of ['almox3d_v3', 'almox3d_v2', 'almox3d_v1']) {
+      const old = JSON.parse(localStorage.getItem(oldKey));
+      if (old && Array.isArray(old.units)) {
+        const migrated = migrateState(old);
+        localStorage.setItem(KEY, JSON.stringify(migrated));
+        return migrated;
+      }
+    }
+    return null;
+  } catch (e) { return null; }
+}
 function save() { state.room = { w: ROOM.w, d: ROOM.d, floor: ROOM.floor, wall: ROOM.wall }; localStorage.setItem(KEY, JSON.stringify(state)); if (typeof buildRoom === 'function' && roomGroup) buildRoom(); }
 const U = id => state.units.find(u => u.id === id);
 const newBoxId = () => 'b' + Math.random().toString(36).slice(2, 9);
 const isStorage = u => DEFS[u.type].kind === 'shelf' || DEFS[u.type].kind === 'closed';
 const uLabel = u => DEFS[u.type].label + ' #' + u.id;
+const shelfCode = u => 'E' + String(u.id).padStart(2, '0');
+const cellCode = (u, b) => shelfCode(u) + '-P' + String(b.level + 1).padStart(2, '0') + '-C' + String(b.slot + 1).padStart(2, '0');
+const normalizeText = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 function footprint(u) { const d = DEFS[u.type]; return u.r % 2 ? { w: d.d, d: d.w } : { w: d.w, d: d.d }; }
+function overlapsUnit(unit, x, z, rotation = unit.r) {
+  const fp = rotation % 2 ? { w: DEFS[unit.type].d, d: DEFS[unit.type].w } : { w: DEFS[unit.type].w, d: DEFS[unit.type].d };
+  return state.units.some(other => {
+    if (other.id === unit.id) return false;
+    const of = footprint(other);
+    return Math.abs(other.x - x) < (of.w + fp.w) / 2 - 0.01 && Math.abs(other.z - z) < (of.d + fp.d) / 2 - 0.01;
+  });
+}
+function blocksAisle(unit, x, z, rotation = unit.r) {
+  if (['door', 'window'].includes(DEFS[unit.type].kind)) return false;
+  const fp = rotation % 2 ? { w: DEFS[unit.type].d, d: DEFS[unit.type].w } : { w: DEFS[unit.type].w, d: DEFS[unit.type].d };
+  return [-3.4, 0, 3.4].some(ax => Math.abs(x - ax) < (fp.w + 1.5) / 2 && Math.abs(z) < 7.2 + fp.d / 2);
+}
 
 /* ---------- Cena ---------- */
 const view = document.getElementById('view');
@@ -80,17 +190,17 @@ view.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x20252d);
 const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-camera.position.set(7, 8, 9);
+camera.position.set(12, 18, 24);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 0.5, 0);
 controls.maxPolarAngle = Math.PI / 2.02;
-controls.minDistance = 1.2; controls.maxDistance = 30;
+controls.minDistance = 1.2; controls.maxDistance = 45;
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0x445566, 0.75));
 const sun = new THREE.DirectionalLight(0xffffff, 0.7);
 sun.position.set(6, 12, 8); sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
-Object.assign(sun.shadow.camera, { left: -10, right: 10, top: 10, bottom: -10, near: 1, far: 30 });
+Object.assign(sun.shadow.camera, { left: -10, right: 10, top: 15, bottom: -15, near: 1, far: 40 });
 scene.add(sun);
 
 let roomGroup = null, gridHelper = null;
@@ -103,6 +213,20 @@ function buildRoom() {
   const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(ROOM.w, ROOM.d);
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(ROOM.w, ROOM.d), new THREE.MeshLambertMaterial({ map: t }));
   floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; roomGroup.add(floor);
+  const aislePaint = new THREE.MeshBasicMaterial({ color: 0xe3b341, side: THREE.DoubleSide });
+  [-6.2, -3.4, 0, 3.4].forEach((x, aisleIndex) => {
+    for (let z = -ROOM.d / 2 + 0.7; z < ROOM.d / 2 - 0.4; z += 1.15) {
+      const dash = new THREE.Mesh(new THREE.PlaneGeometry(0.055, 0.48), aislePaint);
+      dash.rotation.x = -Math.PI / 2; dash.position.set(x, 0.006, z); roomGroup.add(dash);
+    }
+    const signCanvas = document.createElement('canvas'); signCanvas.width = 128; signCanvas.height = 72;
+    const signContext = signCanvas.getContext('2d');
+    signContext.fillStyle = '#f3c84e'; signContext.fillRect(0, 0, 128, 72);
+    signContext.fillStyle = '#172033'; signContext.font = 'bold 42px Arial'; signContext.textAlign = 'center'; signContext.textBaseline = 'middle';
+    signContext.fillText('A' + aisleIndex, 64, 37);
+    const sign = new THREE.Mesh(new THREE.PlaneGeometry(0.75, 0.42), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(signCanvas), side: THREE.DoubleSide }));
+    sign.rotation.x = -Math.PI / 2; sign.position.set(x, 0.008, ROOM.d / 2 - 0.35); roomGroup.add(sign);
+  });
   const wm = new THREE.MeshLambertMaterial({ color: ROOM.wall });
   const openings = { back: [], left: [] };
   state.units.forEach(u => {
@@ -135,7 +259,7 @@ function buildRoom() {
 }
 buildRoom();
 
-/* ---------- Construção dos móveis ---------- */
+/* ---------- Constru��o dos m�veis ---------- */
 const mats = {};
 function lam(color) { return mats[color] || (mats[color] = new THREE.MeshLambertMaterial({ color })); }
 function mk(parent, w, h, d, color, x, y, z) {
@@ -150,13 +274,13 @@ function geom(def) {
 }
 function slotX(def, slot) { const g = geom(def); return -(def.w - 0.08) / 2 + g.slotW * (slot + 0.5); }
 
-function labelTexture(box) {
-  const c = document.createElement('canvas'); c.width = 256; c.height = 160;
+function labelTexture(box, u) {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 190;
   const g = c.getContext('2d');
-  g.fillStyle = box.color; g.fillRect(0, 0, 256, 160);
+  g.fillStyle = box.color; g.fillRect(0, 0, 256, 190);
   g.fillStyle = 'rgba(0,0,0,0.18)'; g.fillRect(0, 0, 256, 10);
-  g.fillStyle = '#fff'; g.fillRect(14, 22, 228, 120);
-  g.strokeStyle = '#555'; g.lineWidth = 3; g.strokeRect(14, 22, 228, 120);
+  g.fillStyle = '#fff'; g.fillRect(14, 16, 228, 164);
+  g.strokeStyle = '#555'; g.lineWidth = 3; g.strokeRect(14, 16, 228, 164);
   g.fillStyle = '#111'; g.textAlign = 'center'; g.textBaseline = 'middle';
   let size = 36, lines;
   for (; size >= 18; size -= 2) {
@@ -166,12 +290,27 @@ function labelTexture(box) {
   const startY = 62 - ((lines.length - 1) * size * 1.1) / 2;
   lines.forEach((l, i) => g.fillText(l, 128, startY + i * size * 1.1));
   g.font = 'bold 28px Arial'; g.fillStyle = '#b00020'; g.fillText('Qtd: ' + box.qty, 128, 120);
+  g.font = 'bold 15px Arial'; g.fillStyle = '#334155'; g.fillText(box.code || 'SEM CODIGO', 128, 142);
+  g.font = 'bold 12px Arial'; g.fillStyle = '#475569'; g.fillText(cellCode(u, box), 128, 164);
   const t = new THREE.CanvasTexture(c); t.anisotropy = 4; return t;
 }
 function wrap(g, text, maxW) {
   const words = String(text).split(/\s+/), lines = []; let cur = '';
   words.forEach(w => { const t = cur ? cur + ' ' + w : w; if (g.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; });
   if (cur) lines.push(cur); return lines;
+}
+function shelfTagTexture(u) {
+  const c = document.createElement('canvas'); c.width = 320; c.height = 140;
+  const g = c.getContext('2d');
+  g.fillStyle = '#f8fafc'; g.fillRect(0, 0, c.width, c.height);
+  g.fillStyle = u.color || '#2563eb'; g.fillRect(0, 0, 105, c.height);
+  g.fillStyle = '#fff'; g.font = 'bold 42px Arial'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(shelfCode(u), 52, 70);
+  g.fillStyle = '#172033'; g.textAlign = 'left'; g.font = 'bold 22px Arial';
+  const category = (u.boxes[0] && u.boxes[0].category) || 'SEM CATEGORIA';
+  wrap(g, category.toUpperCase(), 185).slice(0, 2).forEach((line, i) => g.fillText(line, 122, 55 + i * 27));
+  g.fillStyle = '#475569'; g.font = '16px Arial'; g.fillText('NIVEIS P01-P04', 122, 116);
+  return new THREE.CanvasTexture(c);
 }
 
 function addBoxes(group, u, def) {
@@ -180,8 +319,8 @@ function addBoxes(group, u, def) {
   u.boxes.forEach(b => {
     const base = new THREE.Color(b.color).multiplyScalar(0.8);
     const side = new THREE.MeshLambertMaterial({ color: base });
-    const front = new THREE.MeshLambertMaterial({ map: labelTexture(b) });
-    const hit = match && b.name.toLowerCase().includes(ui.search.toLowerCase());
+    const front = new THREE.MeshLambertMaterial({ map: labelTexture(b, u) });
+    const hit = match && normalizeText([b.name, b.code, b.category, cellCode(u, b)].join(' ')).includes(normalizeText(ui.search));
     const selected = ui.boxId === b.id;
     [side, front].forEach(m => { if (selected) m.emissive.set(0x2255aa); else if (hit) m.emissive.set(0x888800); });
     const top = new THREE.MeshLambertMaterial({ color: new THREE.Color(b.color) });
@@ -203,6 +342,8 @@ function buildUnit(u) {
     for (const sx of [-1, 1]) for (const sz of [-1, 1]) mk(grp, 0.05, g.H, 0.05, def.color, sx * (w / 2 - 0.025), g.H / 2, sz * (d / 2 - 0.025));
     for (let i = 0; i <= def.levels; i++) mk(grp, w, 0.04, d, i === def.levels ? def.color : 0xb9c2cc, 0, i * def.lh + 0.02, 0);
     if (def.big) for (const sz of [-1, 1]) for (let i = 1; i < def.levels; i++) mk(grp, w, 0.08, 0.05, def.color, 0, i * def.lh - 0.04, sz * (d / 2 - 0.025));
+    const tag = new THREE.Mesh(new THREE.PlaneGeometry(0.58, 0.26), new THREE.MeshLambertMaterial({ map: shelfTagTexture(u) }));
+    tag.position.set(0, 0.34, d / 2 + 0.012); tag.castShadow = true; grp.add(tag);
     addBoxes(grp, u, def);
   } else if (k === 'closed') {
     const g = geom(def), H = g.H;
@@ -306,7 +447,7 @@ function updateOutline() {
   }
 }
 
-/* ---------- Seleção / interação 3D ---------- */
+/* ---------- Sele��o / intera��o 3D ---------- */
 const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
 const floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 let drag = null;
@@ -349,8 +490,10 @@ window.addEventListener('pointermove', e => {
   const f = footprint(u);
   let x = fp.x + drag.off.x, z = fp.z + drag.off.z;
   if (document.getElementById('snap').checked) { x = Math.round(x * 10) / 10; z = Math.round(z * 10) / 10; }
-  u.x = clamp(x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2);
-  u.z = clamp(z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2);
+  const nextX = clamp(x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2);
+  const nextZ = clamp(z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2);
+  if (overlapsUnit(u, nextX, nextZ) || blocksAisle(u, nextX, nextZ)) return;
+  u.x = nextX; u.z = nextZ;
   const g = groups.get(u.id); g.position.set(u.x, 0, u.z);
   if (ui.uid === u.id) updateOutline();
 });
@@ -384,7 +527,12 @@ function autoTarget(u, keepIfFree) {
   if (keepIfFree && !cellBox(u, ui.target.level, ui.target.slot) && ui.target.level < def.levels && ui.target.slot < def.slots) return;
   for (let l = 0; l < def.levels; l++) for (let s = 0; s < def.slots; s++) if (!cellBox(u, l, s)) { ui.target = { level: l, slot: s }; return; }
 }
-function fillForm(b) { $('pName').value = b.name; $('pQty').value = b.qty; $('pColor').value = b.color; }
+function fillForm(b) {
+  $('pName').value = b.name || ''; $('pDescription').value = b.description || b.name || '';
+  $('pQty').value = b.qty || 0; $('pMinQty').value = b.minQty ?? 5; $('pWeight').value = b.weightKg ?? 1;
+  $('pColor').value = b.color || '#c8924a'; $('pCode').value = b.code || '';
+  $('pCategory').value = b.category || ''; $('pStatus').value = b.status || 'Ativo';
+}
 
 function renderCatalog() {
   const c = $('catalog'); let cat = '';
@@ -393,13 +541,20 @@ function renderCatalog() {
     const b = document.createElement('button'); b.textContent = '+ ' + d.label; b.onclick = () => addUnit(id); c.appendChild(b);
   });
 }
+function renderSummary() {
+  const boxes = state.units.flatMap(u => (u.boxes || []).map(b => ({ u, b })));
+  const qty = boxes.reduce((sum, x) => sum + (Number(x.b.qty) || 0), 0);
+  const alerts = boxes.filter(x => (x.b.status || 'Ativo') !== 'Ativo' || Number(x.b.qty) <= Number(x.b.minQty ?? 5)).length;
+  $('inventorySummary').innerHTML = '<div><b>' + boxes.length + '</b><small>itens</small></div><div><b>' + qty.toLocaleString('pt-BR') + '</b><small>unidades</small></div><div><b>' + alerts + '</b><small>alertas</small></div>';
+}
 function renderPanel() {
+  renderSummary();
   const u = U(ui.uid);
   $('empty').hidden = !!u; $('detail').hidden = !u;
   updateDatalist();
   if (!u) return;
   const def = DEFS[u.type];
-  $('uName').textContent = uLabel(u);
+  $('uName').textContent = uLabel(u) + (isStorage(u) ? ' | ' + shelfCode(u) : '');
   $('uColor').value = u.color || '#' + def.color.toString(16).padStart(6, '0');
   const sel = $('uVariant'); sel.innerHTML = '';
   Object.entries(DEFS).filter(([, d]) => d.cat === def.cat).forEach(([id, d]) => { const o = document.createElement('option'); o.value = id; o.textContent = d.label; o.selected = id === u.type; sel.appendChild(o); });
@@ -410,28 +565,30 @@ function renderPanel() {
   const grid = $('grid'); grid.innerHTML = '';
   for (let l = def.levels - 1; l >= 0; l--) {
     const row = document.createElement('div'); row.className = 'glevel';
-    row.innerHTML = '<div class="ln">' + (l + 1) + '</div>';
+      row.innerHTML = '<div class="ln">P' + String(l + 1).padStart(2, '0') + '</div>';
     for (let s = 0; s < def.slots; s++) {
       const b = cellBox(u, l, s), c = document.createElement('div');
       c.className = 'cell' + (b ? ' full' : '') + (ui.target.level === l && ui.target.slot === s ? ' target' : '') + (b && b.id === ui.boxId ? ' sel' : '');
-      if (b) { c.style.background = b.color; c.innerHTML = b.name + '<small>x' + b.qty + '</small>'; }
+      c.title = cellCode(u, b || { level: l, slot: s });
+      if (b) { c.style.background = b.color; c.innerHTML = '<b>' + esc(b.name) + '</b><small>' + cellCode(u, b) + '</small><small>' + b.qty + ' un.</small>'; }
+      else c.innerHTML = '<small>' + cellCode(u, { level: l, slot: s }) + '</small><small>Livre</small>';
       c.onclick = () => { ui.target = { level: l, slot: s }; const nb = b ? b.id : null; if (nb !== ui.boxId) { ui.boxId = nb; if (b) fillForm(b); rebuild(u); } renderPanel(); };
       row.appendChild(c);
     }
     grid.appendChild(row);
   }
-  fillSelect('pLevel', def.levels, ui.target.level, i => 'Nível ' + (i + 1) + (i === 0 ? ' (baixo)' : i === def.levels - 1 ? ' (alto)' : ''));
-  fillSelect('pSlot', def.slots, ui.target.slot, i => 'Posição ' + (i + 1));
+  fillSelect('pLevel', def.levels, ui.target.level, i => 'P' + String(i + 1).padStart(2, '0') + (i === 0 ? ' (inferior)' : i === def.levels - 1 ? ' (superior)' : ''));
+  fillSelect('pSlot', def.slots, ui.target.slot, i => 'C' + String(i + 1).padStart(2, '0'));
   const b = u.boxes.find(x => x.id === ui.boxId);
   $('boxActions').hidden = !b;
   $('formTitle').textContent = b ? 'Novo / editar caixa' : 'Adicionar caixa';
-  if (b) $('boxInfo').innerHTML = '<b>' + esc(b.name) + '</b><br>Quantidade: ' + b.qty + '<br>Nível ' + (b.level + 1) + ', posição ' + (b.slot + 1);
+  if (b) $("boxInfo").innerHTML = "<b>" + esc(b.name) + "</b><br>" + esc(b.description || b.name) + "<br>Codigo: " + esc(b.code || "SEM CODIGO") + " | Categoria: " + esc(b.category || "Sem categoria") + "<br>Quantidade: " + b.qty + " | Minimo: " + (b.minQty ?? 5) + " | Peso: " + (b.weightKg ?? 0) + " kg<br>Status: " + esc(b.status || "Ativo") + "<br>Endereco: <strong>" + cellCode(u, b) + "</strong>";
 }
 function fillSelect(id, n, val, lab) { const s = $(id); s.innerHTML = ''; for (let i = 0; i < n; i++) { const o = document.createElement('option'); o.value = i; o.textContent = lab(i); o.selected = i === val; s.appendChild(o); } }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function updateDatalist() { const names = new Set(); state.units.forEach(u => u.boxes.forEach(b => names.add(b.name))); $('prodList').innerHTML = [...names].map(n => '<option value="' + esc(n) + '">').join(''); }
 
-/* ---------- Ações ---------- */
+/* ---------- A��es ---------- */
 function commit(u) { save(); rebuild(u); renderPanel(); }
 function addUnit(type) {
   const def = DEFS[type], u = { id: state.nextId++, type, x: 0, z: 0, r: 0, boxes: [] };
@@ -442,8 +599,9 @@ function addUnit(type) {
     cands.sort((a, b) => Math.abs(a[0]) - Math.abs(b[0]));
   } else for (let x = -ROOM.w / 2 + f.w / 2; x <= ROOM.w / 2 - f.w / 2; x += 0.5) for (let z = -ROOM.d / 2 + f.d / 2; z <= ROOM.d / 2 - f.d / 2; z += 0.5) cands.push([x, z]);
   cands.sort((a, b) => Math.hypot(a[0], a[1] - 1) - Math.hypot(b[0], b[1] - 1));
-  const free = cands.find(([x, z]) => !state.units.some(o => { const g = footprint(o); return Math.abs(o.x - x) < (g.w + f.w) / 2 + 0.1 && Math.abs(o.z - z) < (g.d + f.d) / 2 + 0.1; }));
-  if (free) { u.x = Math.round(free[0] * 10) / 10; u.z = Math.round(free[1] * 10) / 10; }
+  const free = cands.find(([x, z]) => !blocksAisle(u, x, z) && !state.units.some(o => { const g = footprint(o); return Math.abs(o.x - x) < (g.w + f.w) / 2 + 0.1 && Math.abs(o.z - z) < (g.d + f.d) / 2 + 0.1; }));
+  if (!free) { toast('Nao ha espaco livre para adicionar este movel.'); return; }
+  u.x = Math.round(free[0] * 10) / 10; u.z = Math.round(free[1] * 10) / 10;
   state.units.push(u); save(); rebuild(u); select(u.id); toast(def.label + ' adicionado(a). Arraste para posicionar.');
 }
 function deleteUnit() {
@@ -454,19 +612,28 @@ function deleteUnit() {
 }
 function rotate(dir) {
   const u = U(ui.uid); if (!u || ['door', 'window'].includes(DEFS[u.type].kind)) return;
-  u.r = (u.r + dir + 4) % 4; const f = footprint(u);
-  u.x = clamp(u.x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2); u.z = clamp(u.z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2);
+  const nextR = (u.r + dir + 4) % 4, f = nextR % 2 ? { w: DEFS[u.type].d, d: DEFS[u.type].w } : { w: DEFS[u.type].w, d: DEFS[u.type].d };
+  const nextX = clamp(u.x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2), nextZ = clamp(u.z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2);
+  if (overlapsUnit(u, nextX, nextZ, nextR) || blocksAisle(u, nextX, nextZ, nextR)) return toast('Nao e possivel girar: espaco ou corredor ocupado.');
+  u.r = nextR; u.x = nextX; u.z = nextZ;
   commit(u);
 }
 function duplicate() {
   const u = U(ui.uid); if (!u) return;
-  const n = { id: state.nextId++, type: u.type, x: u.x + 0.5, z: u.z + 0.5, r: u.r, boxes: [] };
-  const f = footprint(n); n.x = clamp(n.x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2); n.z = clamp(n.z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2);
+  const n = { id: state.nextId++, type: u.type, x: u.x, z: u.z, r: u.r, boxes: [] };
+  const f = footprint(n), cands = [];
+  for (let x = -ROOM.w / 2 + f.w / 2; x <= ROOM.w / 2 - f.w / 2; x += 0.5) for (let z = -ROOM.d / 2 + f.d / 2; z <= ROOM.d / 2 - f.d / 2; z += 0.5) cands.push([x, z]);
+  cands.sort((a, b) => Math.hypot(a[0] - u.x, a[1] - u.z) - Math.hypot(b[0] - u.x, b[1] - u.z));
+  const free = cands.find(([x, z]) => !overlapsUnit(n, x, z) && !blocksAisle(n, x, z));
+  if (!free) { toast('Nao ha espaco livre para duplicar este movel.'); return; }
+  n.x = free[0]; n.z = free[1];
   state.units.push(n); save(); rebuild(n); select(n.id); toast('Duplicado (vazio).');
 }
 function changeVariant(type) {
   const u = U(ui.uid), nd = DEFS[type]; if (!u || type === u.type) return;
-  if (isStorage(u) && !nd.levels && u.boxes.length) { toast('Esvazie antes de trocar para móvel sem prateleiras.'); renderPanel(); return; }
+  if (nd.levels && u.boxes.length > nd.levels * nd.slots) { toast('O novo modelo nao tem capacidade para todo o estoque.'); renderPanel(); return; }
+  const original = { type: u.type, x: u.x, z: u.z, slots: u.boxes.map(b => [b, b.level, b.slot]) };
+  if (isStorage(u) && !nd.levels && u.boxes.length) { toast('Esvazie antes de trocar para m�vel sem prateleiras.'); renderPanel(); return; }
   const moved = [], occupied = new Set();
   if (nd.levels) {
     const pending = [];
@@ -474,23 +641,48 @@ function changeVariant(type) {
     for (const b of pending) {
       let ok = false;
       for (let l = 0; l < nd.levels && !ok; l++) for (let s = 0; s < nd.slots && !ok; s++) if (!occupied.has(l + ',' + s)) { occupied.add(l + ',' + s); b.level = l; b.slot = s; moved.push(b); ok = true; }
-      if (!ok) { toast('Não cabem todas as caixas no novo modelo.'); u.boxes = u.boxes.filter(x => !pending.includes(x) || moved.includes(x)); renderPanel(); return; }
+      if (!ok) { toast('Nao cabem todas as caixas no novo modelo.'); renderPanel(); return; }
     }
   }
   u.type = type; const f = footprint(u);
   u.x = clamp(u.x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2); u.z = clamp(u.z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2);
+  if (overlapsUnit(u, u.x, u.z) || blocksAisle(u, u.x, u.z)) {
+    u.type = original.type; u.x = original.x; u.z = original.z;
+    original.slots.forEach(([box, level, slot]) => { box.level = level; box.slot = slot; });
+    toast('A alteracao bloquearia outro movel ou corredor.'); renderPanel(); return;
+  }
   autoTarget(u, true); commit(u);
 }
 function readForm() {
-  const name = $('pName').value.trim(), qty = Math.max(1, parseInt($('pQty').value) || 1);
-  return { name, qty, color: $('pColor').value };
+  const name = $('pName').value.trim();
+  return {
+    name, description: $('pDescription').value.trim() || name,
+    qty: Math.max(1, parseInt($('pQty').value, 10) || 1),
+    minQty: Math.max(0, parseInt($('pMinQty').value, 10) || 0),
+    weightKg: Math.max(0, parseFloat($('pWeight').value) || 0),
+    color: $('pColor').value, code: $('pCode').value.trim(),
+    category: $('pCategory').value.trim() || 'Sem categoria', status: $('pStatus').value
+  };
+}
+function nextMaterialCode() {
+  const codes = new Set(state.units.flatMap(u => (u.boxes || []).map(b => String(b.code || '').toUpperCase())));
+  let n = 1, code;
+  do { code = 'MAT-' + String(n++).padStart(3, '0'); } while (codes.has(code));
+  return code;
+}
+function codeInUse(code, exceptId) {
+  const normalized = String(code || '').trim().toUpperCase();
+  return state.units.some(u => u.boxes.some(b => b.id !== exceptId && String(b.code || '').trim().toUpperCase() === normalized));
 }
 function addBox() {
   const u = U(ui.uid); if (!u || !isStorage(u)) return;
   const f = readForm(); if (!f.name) { toast('Informe o nome do produto.'); return; }
   const { level, slot } = ui.target;
-  if (cellBox(u, level, slot)) { toast('Posição ocupada. Escolha uma célula vazia.'); return; }
-  const b = { id: newBoxId(), name: f.name, qty: f.qty, color: f.color, level, slot };
+  if (!f.code) f.code = nextMaterialCode();
+  if (codeInUse(f.code)) { toast('Este codigo ja esta cadastrado.'); return; }
+  if (f.weightKg > 15 && level !== 0) { toast('Caixas acima de 15 kg devem ficar no nivel inferior P01.'); return; }
+  if (cellBox(u, level, slot)) { toast('Posi��o ocupada. Escolha uma c�lula vazia.'); return; }
+  const b = { id: newBoxId(), ...f, level, slot };
   u.boxes.push(b); ui.boxId = b.id; save(); rebuild(u); renderPanel(); toast('Caixa colocada.');
   $('pColor').value = PALETTE[Math.floor(Math.random() * PALETTE.length)];
 }
@@ -508,17 +700,21 @@ function removeBox(skipConfirm) {
 }
 function saveBox() {
   const b = curBox(); if (!b) return; const f = readForm(); if (!f.name) return toast('Informe o nome.');
+  if (!f.code) f.code = b.code || nextMaterialCode();
+  if (codeInUse(f.code, b.id)) return toast('Este codigo ja esta cadastrado.');
+  if (f.weightKg > 15 && b.level !== 0) return toast('Mova a caixa para P01 antes de salvar este peso.');
   Object.assign(b, f); commit(U(ui.uid)); toast('Caixa atualizada.');
 }
 function moveBox() {
   const u = U(ui.uid), b = curBox(); if (!b) return;
   const { level, slot } = ui.target;
-  if (b.level === level && b.slot === slot) return toast('Escolha outra célula vazia.');
-  if (cellBox(u, level, slot)) return toast('Célula ocupada.');
+  if ((b.weightKg || 0) > 15 && level !== 0) return toast('Caixas acima de 15 kg devem ficar no nivel inferior P01.');
+  if (b.level === level && b.slot === slot) return toast('Escolha outra c�lula vazia.');
+  if (cellBox(u, level, slot)) return toast('C�lula ocupada.');
   b.level = level; b.slot = slot; commit(u);
 }
 
-/* ---------- Câmera ---------- */
+/* ---------- C�mera ---------- */
 let tween = null;
 function focusUnit(u) {
   const def = DEFS[u.type], f = footprint(u), H = def.levels ? geom(def).H : (def.h || 0.9);
@@ -533,10 +729,10 @@ function focusUnit(u) {
 $('search').addEventListener('input', e => {
   ui.search = e.target.value.trim(); const box = $('searchResults'); box.innerHTML = '';
   if (ui.search) {
-    const q = ui.search.toLowerCase();
-    state.units.forEach(u => u.boxes.filter(b => b.name.toLowerCase().includes(q)).forEach(b => {
+    const q = normalizeText(ui.search);
+    state.units.forEach(u => u.boxes.filter(b => normalizeText([b.name, b.description, b.code, b.category, b.status, cellCode(u, b)].join(' ')).includes(q)).forEach(b => {
       const d = document.createElement('div'); d.className = 'sr';
-      d.innerHTML = '<b>' + esc(b.name) + '</b> (x' + b.qty + ')<br><small>' + esc(uLabel(u)) + ' • nível ' + (b.level + 1) + '</small>';
+      d.innerHTML = '<b>' + esc(b.name) + '</b> (x' + b.qty + ')<br><small>' + esc(uLabel(u)) + ' | ' + cellCode(u, b) + '</small>';
       d.onclick = () => { select(u.id, b.id); focusUnit(u); };
       box.appendChild(d);
     }));
@@ -558,20 +754,23 @@ $('btnExport').onclick = () => { const a = document.createElement('a'); a.href =
 $('btnImport').onclick = () => $('fileIn').click();
 $('fileIn').onchange = e => {
   const f = e.target.files[0]; if (!f) return; const r = new FileReader();
-  r.onload = () => { try { const s = JSON.parse(r.result); if (!Array.isArray(s.units)) throw 0; state = s; applyRoom(s.room); ui.uid = ui.boxId = null; buildRoom(); syncRoomUI(); save(); rebuildAll(); renderPanel(); toast('Importado.'); } catch (x) { toast('Arquivo inválido.'); } };
+  r.onload = () => { try { const s = JSON.parse(r.result); if (!Array.isArray(s.units)) throw 0; state = s; applyRoom(s.room); ui.uid = ui.boxId = null; buildRoom(); syncRoomUI(); save(); rebuildAll(); renderPanel(); toast('Importado.'); } catch (x) { toast('Arquivo inv�lido.'); } };
   r.readAsText(f); e.target.value = '';
 };
 function syncRoomUI() { $('rW').value = ROOM.w; $('rD').value = ROOM.d; $('rFloor').value = ROOM.floor; $('rWall').value = ROOM.wall; }
 function applyRoomUI() {
-  ROOM.w = clamp(Math.round(+$('rW').value) || 14, 4, 40); ROOM.d = clamp(Math.round(+$('rD').value) || 10, 4, 40);
+  const nextW = clamp(Math.round(+$('rW').value) || ROOM.w, 4, 40), nextD = clamp(Math.round(+$('rD').value) || ROOM.d, 4, 40);
+  const minW = Math.ceil(Math.max(...state.units.map(u => Math.abs(u.x) + footprint(u).w / 2)) * 2);
+  const minD = Math.ceil(Math.max(...state.units.map(u => Math.abs(u.z) + footprint(u).d / 2)) * 2);
+  if (nextW < minW || nextD < minD) { toast('O ambiente precisa ter ao menos ' + minW + ' x ' + minD + ' m para manter os corredores e os moveis.'); syncRoomUI(); return; }
+  ROOM.w = nextW; ROOM.d = nextD;
   ROOM.floor = $('rFloor').value; ROOM.wall = $('rWall').value;
-  state.units.forEach(u => { const f = footprint(u); u.x = clamp(u.x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2); u.z = clamp(u.z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2); });
   buildRoom(); syncRoomUI(); save(); rebuildAll(); toast('Ambiente atualizado.');
 }
 $('rApply').onclick = applyRoomUI;
 $('showGrid').onchange = e => { gridHelper.visible = e.target.checked; };
 $('vTop').onclick = () => { tween = { t: 0, fp: camera.position.clone(), ft: controls.target.clone(), tp: new THREE.Vector3(0.01, Math.max(ROOM.w, ROOM.d) * 1.1, 0.01), tt: new THREE.Vector3(0, 0, 0) }; };
-$('vIso').onclick = () => { tween = { t: 0, fp: camera.position.clone(), ft: controls.target.clone(), tp: new THREE.Vector3(ROOM.w * 0.5, ROOM.w * 0.6, ROOM.d * 0.9), tt: new THREE.Vector3(0, 0.5, 0) }; };
+$('vIso').onclick = () => { tween = { t: 0, fp: camera.position.clone(), ft: controls.target.clone(), tp: new THREE.Vector3(ROOM.w * 0.55, ROOM.d * 0.68, ROOM.d * 0.9), tt: new THREE.Vector3(0, 0.5, 0) }; };
 $('uColor').oninput = e => { const u = U(ui.uid); if (u) { u.color = e.target.value; save(); rebuild(u); } };
 $('bColorReset').onclick = () => { const u = U(ui.uid); if (u) { delete u.color; commit(u); } };
 syncRoomUI();
