@@ -166,9 +166,10 @@ const uLabel = u => DEFS[u.type].label + ' #' + u.id;
 const shelfCode = u => 'E' + String(u.id).padStart(2, '0');
 const cellCode = (u, b) => shelfCode(u) + '-P' + String(b.level + 1).padStart(2, '0') + '-C' + String(b.slot + 1).padStart(2, '0');
 const normalizeText = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-function footprint(u) { const d = DEFS[u.type]; return u.r % 2 ? { w: d.d, d: d.w } : { w: d.w, d: d.d }; }
+function footprint(u) { const d = DEFS[u.type], w = Number(u.w) || d.w, depth = Number(u.d) || d.d; return u.r % 2 ? { w: depth, d: w } : { w, d: depth }; }
 function overlapsUnit(unit, x, z, rotation = unit.r) {
-  const fp = rotation % 2 ? { w: DEFS[unit.type].d, d: DEFS[unit.type].w } : { w: DEFS[unit.type].w, d: DEFS[unit.type].d };
+  const w = Number(unit.w) || DEFS[unit.type].w, d = Number(unit.d) || DEFS[unit.type].d;
+  const fp = rotation % 2 ? { w: d, d: w } : { w, d };
   return state.units.some(other => {
     if (other.id === unit.id) return false;
     const of = footprint(other);
@@ -313,7 +314,7 @@ function addBoxes(group, u, def) {
 }
 
 function buildUnit(u) {
-  const def = Object.assign({}, DEFS[u.type]), grp = new THREE.Group();
+  const def = Object.assign({}, DEFS[u.type], { w: Number(u.w) || DEFS[u.type].w, d: Number(u.d) || DEFS[u.type].d }), grp = new THREE.Group();
   if (u.color) def.color = parseInt(u.color.slice(1), 16);
   grp.userData.uid = u.id;
   const k = def.kind, w = def.w, d = def.d;
@@ -353,9 +354,9 @@ function buildUnit(u) {
     mk(grp, w - 0.1, 0.03, d - 0.1, 0x9aa3af, 0, 0.25, 0);
     for (const sx of [-1, 1]) for (const sz of [-1, 1]) mk(grp, 0.05, def.h, 0.05, 0x3d4450, sx * (w / 2 - 0.04), def.h / 2, sz * (d / 2 - 0.04));
   } else if (k === 'chair') {
-    mk(grp, 0.45, 0.05, 0.45, def.color, 0, 0.46, 0);
-    mk(grp, 0.45, 0.45, 0.05, def.color, 0, 0.72, -0.2);
-    for (const sx of [-1, 1]) for (const sz of [-1, 1]) mk(grp, 0.04, 0.46, 0.04, 0x222, sx * 0.19, 0.23, sz * 0.19);
+    mk(grp, w, 0.05, d, def.color, 0, 0.46, 0);
+    mk(grp, w, 0.45, 0.05, def.color, 0, 0.72, -d * 0.45);
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) mk(grp, 0.04, 0.46, 0.04, 0x222, sx * (w / 2 - 0.04), 0.23, sz * (d / 2 - 0.04));
   } else if (k === 'door') {
     const fc = 0x4a4f58, h = def.h, t = 0.08;
     mk(grp, t, h, d, fc, -w / 2 + t / 2, h / 2, 0);
@@ -394,10 +395,10 @@ function buildUnit(u) {
     const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.15, 0.3, 16), lam(0xa0643c)); pot.position.y = 0.15; pot.castShadow = true; grp.add(pot);
     for (let i = 0; i < 4; i++) { const l = new THREE.Mesh(new THREE.SphereGeometry(0.2 - i * 0.02, 12, 10), lam(def.color)); l.position.set(Math.sin(i * 2) * 0.1, 0.5 + i * 0.17, Math.cos(i * 2) * 0.1); l.castShadow = true; grp.add(l); }
   } else if (k === 'pallet') {
-    for (let i = -1; i <= 1; i++) mk(grp, w, 0.03, 0.18, def.color, 0, 0.145, i * 0.31);
-    for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) mk(grp, 0.14, 0.1, 0.14, 0xa8854f, j * (w / 2 - 0.08), 0.065, i * 0.31);
-    mk(grp, w, 0.02, 0.1, 0xa8854f, 0, 0.01, 0.31).visible = false;
+    for (let i = -1; i <= 1; i++) mk(grp, w, 0.03, Math.min(0.18, d / 3), def.color, 0, 0.145, i * (d / 2 - 0.09));
+    for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) mk(grp, 0.14, 0.1, 0.14, 0xa8854f, j * (w / 2 - 0.08), 0.065, i * (d / 2 - 0.09));
   }
+  if (k === 'ext' || k === 'plant') { grp.scale.x = w / DEFS[u.type].w; grp.scale.z = d / DEFS[u.type].d; }
   grp.position.set(u.x, 0, u.z); grp.rotation.y = u.r * Math.PI / 2;
   return grp;
 }
@@ -536,6 +537,8 @@ function renderPanel() {
   const def = DEFS[u.type];
   $('uName').textContent = uLabel(u) + (isStorage(u) ? ' | ' + shelfCode(u) : '');
   $('uColor').value = u.color || '#' + def.color.toString(16).padStart(6, '0');
+  $('uWidth').value = (Number(u.w) || def.w).toFixed(2);
+  $('uDepth').value = (Number(u.d) || def.d).toFixed(2);
   const sel = $('uVariant'); sel.innerHTML = '';
   Object.entries(DEFS).filter(([, d]) => d.cat === def.cat).forEach(([id, d]) => { const o = document.createElement('option'); o.value = id; o.textContent = d.label; o.selected = id === u.type; sel.appendChild(o); });
   const st = isStorage(u);
@@ -568,6 +571,69 @@ function fillSelect(id, n, val, lab) { const s = $(id); s.innerHTML = ''; for (l
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function updateDatalist() { const names = new Set(); state.units.forEach(u => u.boxes.forEach(b => names.add(b.name))); $('prodList').innerHTML = [...names].map(n => '<option value="' + esc(n) + '">').join(''); }
 
+function syncPlannerUI() {
+  const shelves = state.units.filter(u => DEFS[u.type].kind === 'shelf');
+  $('planShelfCount').value = shelves.length || 15;
+  $('planShelfW').value = (Number(shelves[0]?.w) || DEFS.shelf_m.w).toFixed(2);
+  $('planShelfD').value = (Number(shelves[0]?.d) || DEFS.shelf_m.d).toFixed(2);
+}
+function makeLayoutSuggestions() {
+  const count = Math.floor(Number($('planShelfCount').value));
+  const width = Number($('planShelfW').value), depth = Number($('planShelfD').value);
+  if (!Number.isInteger(count) || count < 1 || count > 100 || !Number.isFinite(width) || !Number.isFinite(depth) || width < 0.2 || depth < 0.2) return toast('Informe quantidade e medidas validas para as estantes.');
+  const shelves = state.units.filter(u => DEFS[u.type].kind === 'shelf');
+  const fixed = state.units.filter(u => DEFS[u.type].kind !== 'shelf');
+  const boxes = shelves.flatMap(u => u.boxes || []), capacity = DEFS.shelf_m.levels * DEFS.shelf_m.slots;
+  if (boxes.length > count * capacity) return toast('Essa quantidade nao comporta todas as caixas cadastradas nas estantes.');
+  const candidates = [];
+  for (let x = -ROOM.w / 2 + 0.1; x <= ROOM.w / 2 - 0.1; x += 0.5) for (let z = -ROOM.d / 2 + 0.1; z <= ROOM.d / 2 - 0.1; z += 0.5) candidates.push([x, z]);
+  const modes = [
+    { name: 'Fileiras longitudinais', sort: (a, b) => a[1] - b[1] || a[0] - b[0], rotation: () => 0 },
+    { name: 'Fileiras transversais', sort: (a, b) => a[0] - b[0] || a[1] - b[1], rotation: () => 1 },
+    { name: 'Distribuicao central', sort: (a, b) => Math.hypot(a[0], a[1]) - Math.hypot(b[0], b[1]), rotation: i => i % 2 }
+  ];
+  const plans = [];
+  modes.forEach(mode => {
+    const ordered = candidates.slice().sort(mode.sort), placed = [];
+    for (let i = 0; i < count; i++) {
+      const r = mode.rotation(i), fp = r ? { w: depth, d: width } : { w: width, d: depth };
+      const pos = ordered.find(([x, z]) => {
+        if (Math.abs(x) + fp.w / 2 > ROOM.w / 2 || Math.abs(z) + fp.d / 2 > ROOM.d / 2) return false;
+        return ![...fixed, ...placed].some(u => { const f = footprint(u); return Math.abs(u.x - x) < (f.w + fp.w) / 2 + 0.08 && Math.abs(u.z - z) < (f.d + fp.d) / 2 + 0.08; });
+      });
+      if (!pos) break;
+      placed.push({ x: pos[0], z: pos[1], r, w: width, d: depth });
+    }
+    if (placed.length !== count) return;
+    const next = placed.map((p, i) => ({ id: shelves[i]?.id || null, type: 'shelf_m', ...p, color: shelves[i]?.color, boxes: [] }));
+    boxes.forEach((box, i) => next[Math.floor(i / capacity)].boxes.push({ ...box, level: Math.floor((i % capacity) / DEFS.shelf_m.slots), slot: i % DEFS.shelf_m.slots }));
+    plans.push({ name: mode.name, shelves: next, fixed });
+  });
+  const root = $('layoutSuggestions'); root.innerHTML = '';
+  if (!plans.length) return toast('Nao foi possivel acomodar essa quantidade e medida neste ambiente.');
+  plans.forEach(plan => {
+    const card = document.createElement('div'); card.className = 'layout-option';
+    const title = document.createElement('b'); title.textContent = plan.name + ' · ' + count + ' estantes'; card.appendChild(title);
+    const preview = document.createElement('div'); preview.className = 'layout-plan';
+    [...fixed.map(u => ({ ...u, fixed: true })), ...plan.shelves].forEach(u => {
+      const f = footprint(u), block = document.createElement('i'); block.className = 'layout-plan-item' + (u.fixed ? ' fixed' : '');
+      block.style.left = ((u.x - f.w / 2 + ROOM.w / 2) / ROOM.w * 100) + '%';
+      block.style.bottom = ((u.z - f.d / 2 + ROOM.d / 2) / ROOM.d * 100) + '%';
+      block.style.width = Math.max(1, f.w / ROOM.w * 100) + '%'; block.style.height = Math.max(1, f.d / ROOM.d * 100) + '%'; preview.appendChild(block);
+    });
+    card.appendChild(preview);
+    const button = document.createElement('button'); button.textContent = 'Aplicar organizacao';
+    button.onclick = () => applyLayoutSuggestion(plan); card.appendChild(button); root.appendChild(card);
+  });
+  toast(plans.length + ' sugestoes prontas.');
+}
+function applyLayoutSuggestion(plan) {
+  let id = state.nextId;
+  const shelves = plan.shelves.map(u => ({ ...u, id: u.id || id++ }));
+  state.nextId = id; state.units = plan.fixed.concat(shelves);
+  ui.uid = ui.boxId = null; save(); rebuildAll(); renderPanel(); syncPlannerUI(); toast('Organizacao aplicada.');
+}
+
 /* ---------- A��es ---------- */
 function commit(u) { save(); rebuild(u); renderPanel(); }
 function addUnit(type) {
@@ -592,7 +658,8 @@ function deleteUnit() {
 }
 function rotate(dir) {
   const u = U(ui.uid); if (!u || ['door', 'window'].includes(DEFS[u.type].kind)) return;
-  const nextR = (u.r + dir + 4) % 4, f = nextR % 2 ? { w: DEFS[u.type].d, d: DEFS[u.type].w } : { w: DEFS[u.type].w, d: DEFS[u.type].d };
+  const w = Number(u.w) || DEFS[u.type].w, d = Number(u.d) || DEFS[u.type].d;
+  const nextR = (u.r + dir + 4) % 4, f = nextR % 2 ? { w: d, d: w } : { w, d };
   const nextX = clamp(u.x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2), nextZ = clamp(u.z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2);
   if (overlapsUnit(u, nextX, nextZ, nextR)) return toast('Nao e possivel girar: espaco ocupado.');
   u.r = nextR; u.x = nextX; u.z = nextZ;
@@ -600,7 +667,7 @@ function rotate(dir) {
 }
 function duplicate() {
   const u = U(ui.uid); if (!u) return;
-  const n = { id: state.nextId++, type: u.type, x: u.x, z: u.z, r: u.r, boxes: [] };
+  const n = { id: state.nextId++, type: u.type, x: u.x, z: u.z, r: u.r, w: u.w, d: u.d, boxes: [] };
   const f = footprint(n), cands = [];
   for (let x = -ROOM.w / 2 + f.w / 2; x <= ROOM.w / 2 - f.w / 2; x += 0.5) for (let z = -ROOM.d / 2 + f.d / 2; z <= ROOM.d / 2 - f.d / 2; z += 0.5) cands.push([x, z]);
   cands.sort((a, b) => Math.hypot(a[0] - u.x, a[1] - u.z) - Math.hypot(b[0] - u.x, b[1] - u.z));
@@ -739,22 +806,42 @@ $('fileIn').onchange = e => {
 };
 function syncRoomUI() { $('rW').value = ROOM.w; $('rD').value = ROOM.d; $('rFloor').value = ROOM.floor; $('rWall').value = ROOM.wall; }
 function applyRoomUI() {
-  const nextW = clamp(Math.round(+$('rW').value) || ROOM.w, 4, 40), nextD = clamp(Math.round(+$('rD').value) || ROOM.d, 4, 40);
-  const minW = Math.ceil(Math.max(...state.units.map(u => Math.abs(u.x) + footprint(u).w / 2)) * 2);
-  const minD = Math.ceil(Math.max(...state.units.map(u => Math.abs(u.z) + footprint(u).d / 2)) * 2);
+  const nextW = clamp(Number($('rW').value) || ROOM.w, 1, 100), nextD = clamp(Number($('rD').value) || ROOM.d, 1, 100);
+  const minW = Math.max(1, Math.max(...state.units.map(u => Math.abs(u.x) + footprint(u).w / 2)) * 2);
+  const minD = Math.max(1, Math.max(...state.units.map(u => Math.abs(u.z) + footprint(u).d / 2)) * 2);
   if (nextW < minW || nextD < minD) { toast('O ambiente precisa ter ao menos ' + minW + ' x ' + minD + ' m para acomodar os moveis.'); syncRoomUI(); return; }
   ROOM.w = nextW; ROOM.d = nextD;
   ROOM.floor = $('rFloor').value; ROOM.wall = $('rWall').value;
   buildRoom(); syncRoomUI(); save(); rebuildAll(); toast('Ambiente atualizado.');
 }
+function applyUnitDimensions() {
+  const u = U(ui.uid); if (!u) return;
+  const w = Number($('uWidth').value), d = Number($('uDepth').value);
+  if (!Number.isFinite(w) || !Number.isFinite(d) || w < 0.2 || d < 0.2) return toast('As medidas devem ser de pelo menos 0,2 m.');
+  const oldW = u.w, oldD = u.d;
+  u.w = w; u.d = d;
+  const f = footprint(u);
+  const outside = Math.abs(u.x) + f.w / 2 > ROOM.w / 2 || Math.abs(u.z) + f.d / 2 > ROOM.d / 2;
+  if (outside || overlapsUnit(u, u.x, u.z)) {
+    if (oldW === undefined) delete u.w; else u.w = oldW;
+    if (oldD === undefined) delete u.d; else u.d = oldD;
+    $('uWidth').value = (Number(u.w) || DEFS[u.type].w).toFixed(2);
+    $('uDepth').value = (Number(u.d) || DEFS[u.type].d).toFixed(2);
+    return toast('Essas medidas nao cabem na posicao atual ou sobrepoem outro movel.');
+  }
+  commit(u); toast('Medidas atualizadas.');
+}
 $('rApply').onclick = applyRoomUI;
+$('bDimensions').onclick = applyUnitDimensions;
+$('planGenerate').onclick = makeLayoutSuggestions;
 $('showGrid').onchange = e => { gridHelper.visible = e.target.checked; };
 $('vTop').onclick = () => { tween = { t: 0, fp: camera.position.clone(), ft: controls.target.clone(), tp: new THREE.Vector3(0.01, Math.max(ROOM.w, ROOM.d) * 1.1, 0.01), tt: new THREE.Vector3(0, 0, 0) }; };
 $('vIso').onclick = () => { tween = { t: 0, fp: camera.position.clone(), ft: controls.target.clone(), tp: new THREE.Vector3(ROOM.w * 0.55, ROOM.d * 0.68, ROOM.d * 0.9), tt: new THREE.Vector3(0, 0.5, 0) }; };
 $('uColor').oninput = e => { const u = U(ui.uid); if (u) { u.color = e.target.value; save(); rebuild(u); } };
 $('bColorReset').onclick = () => { const u = U(ui.uid); if (u) { delete u.color; commit(u); } };
 syncRoomUI();
-$('btnReset').onclick = () => { if (confirm('Voltar ao layout inicial? Isso apaga seu almoxarifado atual.')) { state = defaultState(); applyRoom(); ui.uid = ui.boxId = null; buildRoom(); syncRoomUI(); save(); rebuildAll(); renderPanel(); } };
+syncPlannerUI();
+$('btnReset').onclick = () => { if (confirm('Voltar ao layout inicial? Isso apaga seu almoxarifado atual.')) { state = defaultState(); applyRoom(); ui.uid = ui.boxId = null; buildRoom(); syncRoomUI(); syncPlannerUI(); save(); rebuildAll(); renderPanel(); } };
 window.addEventListener('keydown', e => {
   if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
   if (e.key === 'r' || e.key === 'R') rotate(e.shiftKey ? -1 : 1);

@@ -16,10 +16,18 @@
     <div class="group"><h3>Buscar material</h3><input id="search" placeholder="Nome, c&oacute;digo, categoria ou endere&ccedil;o"><div id="searchResults"></div></div>
     <div class="group">
       <h3>Ambiente</h3>
-      <div class="row"><label>Largura (m)<input id="rW" type="number" min="4" max="40" step="1"></label><label>Profundidade (m)<input id="rD" type="number" min="4" max="40" step="1"></label></div>
+      <div class="row"><label>Largura (m)<input id="rW" type="number" min="1" max="100" step="0.1"></label><label>Profundidade (m)<input id="rD" type="number" min="1" max="100" step="0.1"></label></div>
       <div class="row"><label>Piso<input id="rFloor" type="color"></label><label>Parede<input id="rWall" type="color"></label><button id="rApply">Aplicar</button></div>
       <label class="chk"><input type="checkbox" id="showGrid" checked> Mostrar grade</label>
       <div class="row"><button id="vTop">Vista topo</button><button id="vIso">Vista geral</button></div>
+    </div>
+    <div class="group">
+      <h3>Planejar organiza&ccedil;&atilde;o</h3>
+      <p class="help">Defina o n&uacute;mero e as medidas das estantes. Para redimensionar outros m&oacute;veis, selecione-os no ambiente e edite as medidas no painel ao lado.</p>
+      <div class="row"><label>Quantidade de estantes<input id="planShelfCount" type="number" min="1" max="100" value="15"></label></div>
+      <div class="row"><label>Largura (m)<input id="planShelfW" type="number" min="0.2" max="20" step="0.1" value="1.8"></label><label>Profundidade (m)<input id="planShelfD" type="number" min="0.2" max="20" step="0.1" value="0.5"></label></div>
+      <button id="planGenerate" class="primary">Ver sugest&otilde;es de organiza&ccedil;&atilde;o</button>
+      <div id="layoutSuggestions"></div>
     </div>
     <div class="group">
       <h3>Op&ccedil;&otilde;es</h3>
@@ -41,6 +49,9 @@
       <div class="row"><button id="bRotL">Girar</button><button id="bRotR">Girar</button><button id="bDup">Duplicar</button><button id="bDel" class="danger">Excluir</button></div>
       <div class="row"><label>Modelo<select id="uVariant"></select></label><button id="bFocus">Ver de perto</button></div>
       <div class="row"><label>Cor do m&oacute;vel<input id="uColor" type="color" value="#888888"></label><button id="bColorReset">Cor padr&atilde;o</button></div>
+      <h3>Medidas do m&oacute;vel selecionado</h3>
+      <div class="row"><label>Largura (m)<input id="uWidth" type="number" min="0.2" max="100" step="0.1"></label><label>Profundidade (m)<input id="uDepth" type="number" min="0.2" max="100" step="0.1"></label></div>
+      <div class="row"><button id="bDimensions">Aplicar medidas</button></div>
       <div id="storage">
         <h3>Conte&uacute;do <span id="cap"></span></h3>
         <p class="hint">Endere&ccedil;o da c&eacute;lula: P = n&iacute;vel da prateleira; C = compartimento. Selecione uma c&eacute;lula para adicionar ou mover material.</p>

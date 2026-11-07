@@ -28,6 +28,14 @@ label.chk input{width:auto}
 #inventorySummary b{font-size:16px;color:#9ec5ff}
 #inventorySummary small{font-size:10px;color:#aab;margin-top:2px}
 #catalog .cat{grid-column:1/-1;font-size:11px;color:#8a93a3;margin-top:4px}
+#planGenerate{width:100%;margin:4px 0}
+#layoutSuggestions{display:flex;flex-direction:column;gap:7px;margin-top:7px}
+.layout-option{background:#14171c;border:1px solid #343b47;border-radius:6px;padding:7px}
+.layout-option b{font-size:12px;color:#dce5f2}
+.layout-plan{position:relative;height:74px;margin:6px 0;background:#dfe5eb;border:1px solid #77808c;border-radius:3px;overflow:hidden}
+.layout-plan-item{position:absolute;background:#3b6fb6;border:1px solid #173b6b;opacity:.9}
+.layout-plan-item.fixed{background:#8a929d;border-color:#535b67}
+.layout-option button{width:100%}
 .help,.hint{font-size:11.5px;color:#8a93a3;line-height:1.4}
 #empty{color:#8a93a3;margin-top:20px}
 #grid{display:flex;flex-direction:column;gap:3px;background:#14171c;padding:6px;border-radius:6px}
