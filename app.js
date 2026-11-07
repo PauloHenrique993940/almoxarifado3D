@@ -30,7 +30,7 @@ const DEFS = {
   door_roll: { cat: 'Portas', label: 'Portao de enrolar', kind: 'door', w: 3.0, d: 0.2, h: 2.6, color: 0x9aa3af, roll: true }
 };
 const ROOM = { w: 14, d: 22, wallH: 3, floor: '#dfe5eb', wall: '#d8dde4' };
-const KEY = 'almox3d_v5';
+const KEY = 'almox3d_v6';
 const PALETTE = ['#c8924a', '#d8a35c', '#7aa6d6', '#8ec07c', '#e0807a', '#b79ae0', '#e5cf6a', '#6fc3c3'];
 const $ = id => document.getElementById(id);
 
@@ -53,8 +53,8 @@ function defaultState() {
     { x: 1.7, category: 'Eletrica e informatica', color: PALETTE[7], frameColor: '#bd7c25', items: [['Cabo de rede', 25, 5], ['Conectores RJ45', 300, 2], ['Lampadas LED', 48, 2], ['Tomadas', 60, 3], ['Extensoes', 12, 4], ['Fusiveis', 80, 1], ['Mouse USB', 15, 1], ['Teclados USB', 10, 2]] },
     { x: 5.1, category: 'EPI e ferramentas', color: PALETTE[3], frameColor: '#92515a', items: [['Luvas de protecao', 40, 3], ['Fita isolante', 60, 2], ['Chaves de fenda', 24, 3], ['Oculos de protecao', 20, 2], ['Mascaras PFF2', 100, 1], ['Alicates', 12, 4], ['Capacetes', 10, 3], ['Trenas', 8, 1]] }
   ];
-  const zRows = [-5.5, -3.3, -1.1, 1.1, 3.3, 5.5];
-  const shelfPositions = lanes.flatMap(lane => zRows.map(z => ({ lane, z }))).slice(0, 22);
+  const zRows = [-3.3, -1.1, 1.1, 3.3];
+  const shelfPositions = lanes.flatMap(lane => zRows.map(z => ({ lane, z }))).slice(0, 15);
   const defaultItems = lanes.flatMap(lane => lane.items.map(item => ({ lane, item })));
   shelfPositions.forEach(({ lane, z }, index) => {
     const shelf = add('shelf_m', lane.x, z, 1);
@@ -147,7 +147,7 @@ function load() {
   try {
     const current = JSON.parse(localStorage.getItem(KEY));
     if (current) return current;
-    for (const oldKey of ['almox3d_v4', 'almox3d_v3', 'almox3d_v2', 'almox3d_v1']) {
+    for (const oldKey of ['almox3d_v5', 'almox3d_v4', 'almox3d_v3', 'almox3d_v2', 'almox3d_v1']) {
       const old = JSON.parse(localStorage.getItem(oldKey));
       if (old && Array.isArray(old.units)) {
         const migrated = migrateState(old);
