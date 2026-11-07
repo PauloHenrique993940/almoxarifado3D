@@ -175,12 +175,6 @@ function overlapsUnit(unit, x, z, rotation = unit.r) {
     return Math.abs(other.x - x) < (of.w + fp.w) / 2 - 0.01 && Math.abs(other.z - z) < (of.d + fp.d) / 2 - 0.01;
   });
 }
-function blocksAisle(unit, x, z, rotation = unit.r) {
-  if (['door', 'window'].includes(DEFS[unit.type].kind)) return false;
-  const fp = rotation % 2 ? { w: DEFS[unit.type].d, d: DEFS[unit.type].w } : { w: DEFS[unit.type].w, d: DEFS[unit.type].d };
-  return [-3.4, 0, 3.4].some(ax => Math.abs(x - ax) < (fp.w + 1.5) / 2 && Math.abs(z) < 7.2 + fp.d / 2);
-}
-
 /* ---------- Cena ---------- */
 const view = document.getElementById('view');
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -213,20 +207,6 @@ function buildRoom() {
   const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(ROOM.w, ROOM.d);
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(ROOM.w, ROOM.d), new THREE.MeshLambertMaterial({ map: t }));
   floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; roomGroup.add(floor);
-  const aislePaint = new THREE.MeshBasicMaterial({ color: 0xe3b341, side: THREE.DoubleSide });
-  [-6.2, -3.4, 0, 3.4].forEach((x, aisleIndex) => {
-    for (let z = -ROOM.d / 2 + 0.7; z < ROOM.d / 2 - 0.4; z += 1.15) {
-      const dash = new THREE.Mesh(new THREE.PlaneGeometry(0.055, 0.48), aislePaint);
-      dash.rotation.x = -Math.PI / 2; dash.position.set(x, 0.006, z); roomGroup.add(dash);
-    }
-    const signCanvas = document.createElement('canvas'); signCanvas.width = 128; signCanvas.height = 72;
-    const signContext = signCanvas.getContext('2d');
-    signContext.fillStyle = '#f3c84e'; signContext.fillRect(0, 0, 128, 72);
-    signContext.fillStyle = '#172033'; signContext.font = 'bold 42px Arial'; signContext.textAlign = 'center'; signContext.textBaseline = 'middle';
-    signContext.fillText('A' + aisleIndex, 64, 37);
-    const sign = new THREE.Mesh(new THREE.PlaneGeometry(0.75, 0.42), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(signCanvas), side: THREE.DoubleSide }));
-    sign.rotation.x = -Math.PI / 2; sign.position.set(x, 0.008, ROOM.d / 2 - 0.35); roomGroup.add(sign);
-  });
   const wm = new THREE.MeshLambertMaterial({ color: ROOM.wall });
   const openings = { back: [], left: [] };
   state.units.forEach(u => {
@@ -492,7 +472,7 @@ window.addEventListener('pointermove', e => {
   if (document.getElementById('snap').checked) { x = Math.round(x * 10) / 10; z = Math.round(z * 10) / 10; }
   const nextX = clamp(x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2);
   const nextZ = clamp(z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2);
-  if (overlapsUnit(u, nextX, nextZ) || blocksAisle(u, nextX, nextZ)) return;
+  if (overlapsUnit(u, nextX, nextZ)) return;
   u.x = nextX; u.z = nextZ;
   const g = groups.get(u.id); g.position.set(u.x, 0, u.z);
   if (ui.uid === u.id) updateOutline();
@@ -599,7 +579,7 @@ function addUnit(type) {
     cands.sort((a, b) => Math.abs(a[0]) - Math.abs(b[0]));
   } else for (let x = -ROOM.w / 2 + f.w / 2; x <= ROOM.w / 2 - f.w / 2; x += 0.5) for (let z = -ROOM.d / 2 + f.d / 2; z <= ROOM.d / 2 - f.d / 2; z += 0.5) cands.push([x, z]);
   cands.sort((a, b) => Math.hypot(a[0], a[1] - 1) - Math.hypot(b[0], b[1] - 1));
-  const free = cands.find(([x, z]) => !blocksAisle(u, x, z) && !state.units.some(o => { const g = footprint(o); return Math.abs(o.x - x) < (g.w + f.w) / 2 + 0.1 && Math.abs(o.z - z) < (g.d + f.d) / 2 + 0.1; }));
+  const free = cands.find(([x, z]) => !state.units.some(o => { const g = footprint(o); return Math.abs(o.x - x) < (g.w + f.w) / 2 + 0.1 && Math.abs(o.z - z) < (g.d + f.d) / 2 + 0.1; }));
   if (!free) { toast('Nao ha espaco livre para adicionar este movel.'); return; }
   u.x = Math.round(free[0] * 10) / 10; u.z = Math.round(free[1] * 10) / 10;
   state.units.push(u); save(); rebuild(u); select(u.id); toast(def.label + ' adicionado(a). Arraste para posicionar.');
@@ -614,7 +594,7 @@ function rotate(dir) {
   const u = U(ui.uid); if (!u || ['door', 'window'].includes(DEFS[u.type].kind)) return;
   const nextR = (u.r + dir + 4) % 4, f = nextR % 2 ? { w: DEFS[u.type].d, d: DEFS[u.type].w } : { w: DEFS[u.type].w, d: DEFS[u.type].d };
   const nextX = clamp(u.x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2), nextZ = clamp(u.z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2);
-  if (overlapsUnit(u, nextX, nextZ, nextR) || blocksAisle(u, nextX, nextZ, nextR)) return toast('Nao e possivel girar: espaco ou corredor ocupado.');
+  if (overlapsUnit(u, nextX, nextZ, nextR)) return toast('Nao e possivel girar: espaco ocupado.');
   u.r = nextR; u.x = nextX; u.z = nextZ;
   commit(u);
 }
@@ -624,7 +604,7 @@ function duplicate() {
   const f = footprint(n), cands = [];
   for (let x = -ROOM.w / 2 + f.w / 2; x <= ROOM.w / 2 - f.w / 2; x += 0.5) for (let z = -ROOM.d / 2 + f.d / 2; z <= ROOM.d / 2 - f.d / 2; z += 0.5) cands.push([x, z]);
   cands.sort((a, b) => Math.hypot(a[0] - u.x, a[1] - u.z) - Math.hypot(b[0] - u.x, b[1] - u.z));
-  const free = cands.find(([x, z]) => !overlapsUnit(n, x, z) && !blocksAisle(n, x, z));
+  const free = cands.find(([x, z]) => !overlapsUnit(n, x, z));
   if (!free) { toast('Nao ha espaco livre para duplicar este movel.'); return; }
   n.x = free[0]; n.z = free[1];
   state.units.push(n); save(); rebuild(n); select(n.id); toast('Duplicado (vazio).');
@@ -646,10 +626,10 @@ function changeVariant(type) {
   }
   u.type = type; const f = footprint(u);
   u.x = clamp(u.x, -ROOM.w / 2 + f.w / 2, ROOM.w / 2 - f.w / 2); u.z = clamp(u.z, -ROOM.d / 2 + f.d / 2, ROOM.d / 2 - f.d / 2);
-  if (overlapsUnit(u, u.x, u.z) || blocksAisle(u, u.x, u.z)) {
+  if (overlapsUnit(u, u.x, u.z)) {
     u.type = original.type; u.x = original.x; u.z = original.z;
     original.slots.forEach(([box, level, slot]) => { box.level = level; box.slot = slot; });
-    toast('A alteracao bloquearia outro movel ou corredor.'); renderPanel(); return;
+    toast('A alteracao bloquearia outro movel.'); renderPanel(); return;
   }
   autoTarget(u, true); commit(u);
 }
@@ -762,7 +742,7 @@ function applyRoomUI() {
   const nextW = clamp(Math.round(+$('rW').value) || ROOM.w, 4, 40), nextD = clamp(Math.round(+$('rD').value) || ROOM.d, 4, 40);
   const minW = Math.ceil(Math.max(...state.units.map(u => Math.abs(u.x) + footprint(u).w / 2)) * 2);
   const minD = Math.ceil(Math.max(...state.units.map(u => Math.abs(u.z) + footprint(u).d / 2)) * 2);
-  if (nextW < minW || nextD < minD) { toast('O ambiente precisa ter ao menos ' + minW + ' x ' + minD + ' m para manter os corredores e os moveis.'); syncRoomUI(); return; }
+  if (nextW < minW || nextD < minD) { toast('O ambiente precisa ter ao menos ' + minW + ' x ' + minD + ' m para acomodar os moveis.'); syncRoomUI(); return; }
   ROOM.w = nextW; ROOM.d = nextD;
   ROOM.floor = $('rFloor').value; ROOM.wall = $('rWall').value;
   buildRoom(); syncRoomUI(); save(); rebuildAll(); toast('Ambiente atualizado.');
